@@ -1,3 +1,4 @@
+import sys
 import time
 import argparse
 
@@ -19,18 +20,17 @@ def read_from_port(port, baudrate, output_file):
             ser = serial.Serial(
                 port, baudrate, timeout=1, bytesize=8, parity="N", stopbits=1
             )
-            print(f"Connected to {port} at {baudrate} baudrate.")
-            print()
+            sys.stderr.write(f"Connected to {port} at {baudrate} baudrate.\n\n")
 
             if output_file:
                 with open(output_file, "a", encoding="utf8") as file:
                     while True:
                         if ser.closed:
                             break
-                        data = decode_data(ser.read_until(size=1000))
+                        data = decode_data(ser.read_until())
                         if data:
-                            print(data)
-                            file.write(data)
+                            sys.stdout.write(f"{data}\n")
+                            file.write(f"{data}\n")
                             file.flush()
                         time.sleep(0.001)
             else:
@@ -38,20 +38,20 @@ def read_from_port(port, baudrate, output_file):
                     if ser.closed:
                         break
 
-                    data = decode_data(ser.read_until(size=1000))
+                    data = decode_data(ser.read_until())
                     if data:
-                        print(data)
+                        sys.stdout.write(f"{data}\n")
                     time.sleep(0.001)
 
         except serial.SerialException as e:
-            print(f"Error: {e}")
+            sys.stderr.write(f"Error: {e}\n")
         except KeyboardInterrupt:
-            print("Program interrupted by user.")
+            sys.stderr.write("Program interrupted by user.\n")
             return
         finally:
             if ser and ser.is_open:
                 ser.close()
-                print("Serial port closed.")
+                sys.stderr.write("Serial port closed.\n")
 
         time.sleep(1)
 
