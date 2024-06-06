@@ -9,7 +9,7 @@ def hex_to_ascii(data: bytes):
     try:
         return data.decode("latin-1")
     except Exception:
-        sys.stderr.write(f"[ERROR] {data.hex()}")
+        sys.stderr.write(f"    [ASCII_ERR] {data.hex()}")
         return data.hex()
 
 
@@ -17,6 +17,7 @@ def decode_data(data: bytes):
     try:
         return data.decode("utf-8").strip()
     except UnicodeDecodeError:
+        sys.stderr.write(f"    [UTF8_ERR] {data.hex()}")
         return hex_to_ascii(data)
 
 
