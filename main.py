@@ -5,11 +5,18 @@ import argparse
 import serial
 
 
+def hex_to_ascii(data: bytes):
+    try:
+        return data.decode("latin-1")
+    except Exception:
+        return data.hex()
+
+
 def decode_data(data: bytes):
     try:
         return data.decode("utf-8").strip()
     except UnicodeDecodeError:
-        return data.hex()
+        return hex_to_ascii(data)
 
 
 def read_from_port(port, baudrate, output_file):
