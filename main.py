@@ -25,7 +25,7 @@ def read_from_port(port, baudrate, output_file):
             if output_file:
                 with open(output_file, "a", encoding="utf8") as file:
                     while True:
-                        if ser.closed:
+                        if not ser.is_open:
                             break
                         data = decode_data(ser.read_until())
                         if data:
@@ -35,9 +35,8 @@ def read_from_port(port, baudrate, output_file):
                         time.sleep(0.001)
             else:
                 while True:
-                    if ser.closed:
+                    if not ser.is_open:
                         break
-
                     data = decode_data(ser.read_until())
                     if data:
                         sys.stdout.write(f"{data}\n")
