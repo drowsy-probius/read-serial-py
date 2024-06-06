@@ -15,7 +15,7 @@ def hex_to_ascii(data: bytes):
 
 def decode_data(data: bytes):
     try:
-        return data.decode("utf-8").strip()
+        return data.decode("utf-8")
     except UnicodeDecodeError:
         sys.stderr.write(f"    [UTF8_ERR] {data.hex()}")
         return hex_to_ascii(data)
