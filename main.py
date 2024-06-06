@@ -38,8 +38,9 @@ def read_from_port(port, baudrate, output_file):
                             break
                         data = decode_data(ser.read_until())
                         if data:
-                            sys.stdout.write(f"{data}\n")
-                            file.write(f"{data}\n")
+                            sys.stdout.write(data)
+                            file.write(data)
+                            file.flush()
                         time.sleep(0.001)
             else:
                 while True:
@@ -47,7 +48,7 @@ def read_from_port(port, baudrate, output_file):
                         break
                     data = decode_data(ser.read_until())
                     if data:
-                        sys.stdout.write(f"{data}\n")
+                        sys.stdout.write(data)
                     time.sleep(0.001)
 
         except serial.SerialException as e:
